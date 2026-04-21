@@ -1,0 +1,25 @@
+guild_name: "your-guild-name"
+guild_realm: "your-realm"
+guild_region: "eu"
+
+# Only runs with at least this many roster members in your guild will be posted.
+min_guild_members: 2
+
+# Only poll characters whose current-season M+ score is at least this.
+# Default 0 means: poll anyone who has done any M+ this season (which implicitly
+# filters to active max-level characters). Raise this to narrow to serious
+# pushers only.
+min_member_score: 0
+
+room_id: "!xxx:cliquers.app"
+
+# How often to check for new runs, in seconds.
+poll_interval_seconds: 300
+
+# How often to re-fetch the guild roster, in seconds.
+members_refresh_seconds: 3600
+
+# Hard cap on outgoing requests per minute (raider.io's unauthenticated limit
+# is 200/min — we default to 180 to leave headroom). All concurrent calls share
+# this budget via a sliding-window limiter.
+max_requests_per_minute: 180

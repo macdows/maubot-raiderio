@@ -1,0 +1,12 @@
+maubot: 0.1.0
+id: app.cliquers.raiderio
+version: 0.3.0
+license: MIT
+modules:
+  - raiderio_bot
+main_class: RaiderIOBot
+database: true
+database_type: asyncpg
+config: true
+extra_files:
+  - base-config.yaml
