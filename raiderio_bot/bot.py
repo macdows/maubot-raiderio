@@ -34,6 +34,7 @@ class Config(BaseProxyConfig):
         helper.copy("poll_interval_seconds")
         helper.copy("members_refresh_seconds")
         helper.copy("max_requests_per_minute")
+        helper.copy("dungeon_images")
 
 
 class RaiderIOBot(Plugin):
@@ -223,7 +224,10 @@ class RaiderIOBot(Plugin):
             ) or "?"
             level = details.get("mythic_level", "?")
 
-            body, formatted = format_run(details, scores_by_key, region, season, members)
+            body, formatted = format_run(
+                details, scores_by_key, region, season, members,
+                self.config["dungeon_images"] or {},
+            )
             content = TextMessageEventContent(
                 msgtype=MessageType.TEXT,
                 body=body,

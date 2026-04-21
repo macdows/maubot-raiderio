@@ -23,3 +23,13 @@ members_refresh_seconds: 3600
 # is 200/min — we default to 180 to leave headroom). All concurrent calls share
 # this budget via a sliding-window limiter.
 max_requests_per_minute: 180
+
+# Pre-uploaded Matrix media for each dungeon. Keys are raider.io dungeon
+# slugs (e.g. "magisters-terrace"), values are mxc:// URIs. Upload each
+# image UNENCRYPTED so it renders inline in encrypted rooms, e.g.:
+#   curl -H "Authorization: Bearer <access-token>" \
+#        -H "Content-Type: image/jpeg" \
+#        --data-binary @magisters-terrace.jpg \
+#        "https://cliquers.app/_matrix/media/v3/upload"
+# Dungeons not listed here fall back to a text "Image" link to the raider.io CDN.
+dungeon_images: {}
