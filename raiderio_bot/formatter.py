@@ -160,6 +160,7 @@ def format_run(
     region: str,
     season: str,
     guild_member_count: int,
+    dungeon_images: dict[str, str],
 ) -> tuple[str, str]:
     """Format a run-details response into (plain_body, html_body).
 
@@ -167,6 +168,9 @@ def format_run(
     populated from recent member polls and on-demand non-guild lookups.
     `guild_member_count` controls the header: <2 guildies gets "Solo Run!",
     otherwise "Guild Run!".
+    `dungeon_images` maps dungeon slug → mxc:// URI. When a slug matches, the
+    image is embedded inline in the HTML body and the CDN fallback text link
+    is suppressed. Missing slugs fall back to the existing CDN link.
     """
     if guild_member_count >= 2:
         title_emoji = "👊"
@@ -214,7 +218,14 @@ def format_run(
     dungeon_leaderboard_url = _build_dungeon_leaderboard_url(
         season, dungeon_slug or "", region
     )
-    dungeon_image_url = _build_dungeon_image_url(dungeon if isinstance(dungeon, dict) else {}, season)
+    # Prefer a pre-uploaded Matrix mxc:// URI when we have one (embeds inline);
+    # otherwise fall back to the raider.io CDN link in the footer.
+    dungeon_mxc = dungeon_images.get(dungeon_slug or "")
+    dungeon_image_url = (
+        "" if dungeon_mxc else _build_dungeon_image_url(
+            dungeon if isinstance(dungeon, dict) else {}, season
+        )
+    )
 
     # --- Plain body ---
     lines: list[str] = []
@@ -337,5 +348,10 @@ def format_run(
         )
     if footer_html:
         parts.append(" • ".join(footer_html))
+
+    if dungeon_mxc:
+        parts.append(
+            f'<br><br><img src="{html.escape(dungeon_mxc)}" alt="{h_dungeon}"/>'
+        )
 
     return plain, "".join(parts)

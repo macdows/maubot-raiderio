@@ -208,3 +208,9 @@ __marimo__/
 
 # Build Artifacts
 *.mbp
+
+# macOS
+.DS_Store
+
+# Locally downloaded dungeon art (uploaded to Matrix, referenced via mxc:// in config)
+dungeon_images/
