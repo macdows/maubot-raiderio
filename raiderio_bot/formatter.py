@@ -350,8 +350,13 @@ def format_run(
         parts.append(" • ".join(footer_html))
 
     if dungeon_mxc:
+        # Element renders <img> as emoji-sized until width+height are set. 600x231
+        # matches the 1800x692 banners raider.io ships for most TWW/MN dungeons;
+        # a couple of re-used older dungeons have different aspect ratios and
+        # will be mildly distorted (acceptable for stylised banner art).
         parts.append(
-            f'<br><br><img src="{html.escape(dungeon_mxc)}" alt="{h_dungeon}"/>'
+            f'<br><br><img src="{html.escape(dungeon_mxc)}" '
+            f'alt="{h_dungeon}" width="600" height="231"/>'
         )
 
     return plain, "".join(parts)
